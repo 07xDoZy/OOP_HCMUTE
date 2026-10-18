@@ -1,30 +1,43 @@
+import data.DataGenerator;
 import enums.*;
 import model.*;
 import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        NhanVien nv = new NhanVien("NV01", "Tran Van A", "0901234567", ChucVu.LE_TAN);
-        ToaNha toa = new ToaNha("T01", "A", 5);
-        LoaiPhong lp = new LoaiPhong("LP01", "Phong 4 giuong", 4, 500000);
-        Phong p = new Phong("P101", "101", 1, TrangThaiPhong.CON_CHO, lp);
-        toa.themPhong(p);
-        Giuong g = new Giuong("G01", 1, TrangThaiGiuong.DA_CO_NGUOI);
-        p.themGiuong(g);
-        SinhVien sv = new SinhVien("SV01", "Nguyen Van B", LocalDate.of(2005, 3, 1),
-                GioiTinh.NAM, "0912345678", "b@mail.com", "CNTT");
-        HopDong hd = new HopDong("HD01", LocalDate.of(2026, 9, 1), LocalDate.of(2027, 1, 31),
-                1000000, TrangThaiHopDong.HIEU_LUC, sv, g, nv);
-        HoaDon hoaDon = new HoaDon("HDN01", 10, 2026, 500000, 120000, 60000, hd);
-        new ThanhToan("TT01", LocalDate.of(2026, 10, 5), 300000,
-                PhuongThucThanhToan.TIEN_MAT, hoaDon, nv);
+        DataGenerator d = new DataGenerator();
+        LocalDate homNay = LocalDate.now();
 
-        System.out.println("Tong tien: " + hoaDon.getTongTien());
-        System.out.println("Da tra: " + hoaDon.getTongDaTra());
-        System.out.println("Con no: " + hoaDon.getConNo());
-        System.out.println("Toa " + toa.getTenToa() + " co " + toa.getDanhSachPhong().size() + " phong");
-        System.out.println(toa);
-        System.out.println(p);
-        System.out.println(hd);
+        System.out.println("ToaNha:    " + d.toaNhas.size());
+        System.out.println("LoaiPhong: " + d.loaiPhongs.size());
+        System.out.println("Phong:     " + d.phongs.size());
+        System.out.println("Giuong:    " + d.giuongs.size());
+        System.out.println("SinhVien:  " + d.sinhViens.size());
+        System.out.println("NhanVien:  " + d.nhanViens.size());
+        System.out.println("HopDong:   " + d.hopDongs.size());
+        System.out.println("HoaDon:    " + d.hoaDons.size());
+        System.out.println("ThanhToan: " + d.thanhToans.size());
+        System.out.println("--- Các ca đặc biệt ---");
+
+        long giuongTrong = d.giuongs.stream().filter(g -> g.getTrangThai() == TrangThaiGiuong.TRONG).count();
+        long sapHetHan = d.hopDongs.stream()
+                .filter(h -> h.getTrangThai() == TrangThaiHopDong.HIEU_LUC
+                        && !h.getNgayKetThuc().isBefore(homNay)
+                        && !h.getNgayKetThuc().isAfter(homNay.plusDays(30))).count();
+        long chuaTra = d.hoaDons.stream().filter(h -> h.getTongDaTra() == 0).count();
+        long traMotPhan = d.hoaDons.stream().filter(h -> h.getTongDaTra() > 0 && h.getConNo() > 0.01).count();
+        long conDung1Giuong = d.phongs.stream()
+                .filter(p -> p.getTrangThai() == TrangThaiPhong.CON_CHO
+                        && p.getDanhSachGiuong().stream().filter(g -> g.getTrangThai() == TrangThaiGiuong.TRONG).count() == 1)
+                .count();
+        long svNhieuGiuong = d.sinhViens.stream()
+                .filter(s -> s.getDanhSachHopDong().stream().map(HopDong::getGiuong).distinct().count() > 1).count();
+
+        System.out.println("Giường trống:                 " + giuongTrong);
+        System.out.println("HĐ sắp hết hạn (30 ngày):     " + sapHetHan);
+        System.out.println("Hóa đơn chưa trả:             " + chuaTra);
+        System.out.println("Hóa đơn trả một phần:         " + traMotPhan);
+        System.out.println("Phòng còn đúng 1 giường trống:" + conDung1Giuong);
+        System.out.println("SV từng ở nhiều hơn 1 giường: " + svNhieuGiuong);
     }
 }
