@@ -1,0 +1,13 @@
+PASS all self-tests
+PASS export queries
+PASS all 30 queries
+PASS custom floor
+PASS custom name
+PASS invalid month
+PASS invalid query
+PASS missing value
+PASS duplicate option
+PASS menu recovers invalid input
+PASS menu EOF exits
+PASS help
+PASS Day-4 core sources and 11 TSV files unchanged

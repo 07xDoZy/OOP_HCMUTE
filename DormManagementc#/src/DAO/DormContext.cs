@@ -14,7 +14,7 @@ public class DormContext
 	public HoaDonDAO HoaDonDAO { get; }
 	public ThanhToanDAO ThanhToanDAO { get; }
 
-	// Không truyền ngày: dùng ngày máy, giống LocalDate.now() của Java.
+	// Không truyền ngày: dùng mốc dữ liệu chuẩn DatasetConfig.ReferenceDate.
 	// Truyền ngày: phục vụ demo/kiểm tra có kết quả lặp lại được.
 	public DormContext(DateTime? ngayThamChieu = null)
 	{

@@ -117,6 +117,8 @@ internal static class SelfTests
                 "Setter ngay sinh/ket thuc/thanh toan bo phan gio");
             Check(new DataGenerator(date.AddHours(23)).HopDongs.Single(h => h.MaHD == "HD13").NgayKetThuc == date.AddDays(10),
                 "Ngay tham chieu co gio khong lam lech ngay du lieu");
+            Check(new DataGenerator().HopDongs.Single(h => h.MaHD == "HD13").NgayKetThuc == new DateTime(2026,10,29),
+                "Mac dinh dung moc dong bang, khong phu thuoc ngay may");
             Console.WriteLine($"\n{passed}/{passed} checks passed.");
             return 0;
         }

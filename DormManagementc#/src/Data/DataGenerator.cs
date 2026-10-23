@@ -20,7 +20,7 @@ public class DataGenerator {
     private readonly DateTime ngayThamChieu;
 
     public DataGenerator(DateTime? ngayThamChieu = null) {
-        this.ngayThamChieu = (ngayThamChieu ?? DateTime.Today).Date;
+        this.ngayThamChieu = (ngayThamChieu ?? DatasetConfig.ReferenceDate).Date;
         TaoNhanVien();
         TaoToaPhongGiuong();
         TaoSinhVien();
