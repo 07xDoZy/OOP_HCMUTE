@@ -306,7 +306,7 @@ Quy tắc nghiệp vụ "không trùng thời gian cư trú" được kiểm tra
 10. Tính thời gian cư trú trung bình (số ngày) của các hợp đồng đã kết thúc.
 
 
-## 10. Công nghệ và phân công
+## 9. Công nghệ và phân công
 
 | Hạng mục | Java | C# |
 |---|---|---|
@@ -321,7 +321,7 @@ Quy tắc nghiệp vụ "không trùng thời gian cư trú" được kiểm tra
 | Nguyễn Thị Ngọc Nhung | Báo cáo Word, video | 10 câu (Stream + LINQ) |
 
 
-## 9. Cách chạy (Java)
+## 10. Cách chạy (Java)
 
 1. Mở thư mục `DormManagement` bằng IntelliJ IDEA, chọn JDK 17 trở lên.
 2. Đánh dấu thư mục `src` là Sources Root (nếu IntelliJ chưa tự nhận).
