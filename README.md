@@ -166,9 +166,13 @@ src/
 ├── model/    (ToaNha, Phong, LoaiPhong, Giuong, SinhVien, HopDong, NhanVien, HoaDon, ThanhToan)
 ├── enums/    (GioiTinh, TrangThaiPhong, TrangThaiGiuong, TrangThaiHopDong, PhuongThucThanhToan, ChucVu)
 ├── data/     (DataGenerator)
-├── dao/      (IGenericDAO<T>, ToaNhaDAO, PhongDAO, ..., ThanhToanDAO)
-├── query/    (Truy vấn của từng thành viên: KieuQueries, NhungQueries, LocQueries)
-└── Main.java
+├── dao/      (IGenericDAO, BaseDAO, 9 DAO, DormContext)
+├── query/    (KieuQueries, NhungQueries, LocQueries)
+├── Main.java        (chạy cả 30 câu)
+├── MainQuery.java   (10 câu của Kiều)
+├── MainQuery2.java  (20 câu của Nhung và Lộc)
+├── MainDao.java     (kiểm tra DAO)
+└── MainModel.java   (kiểm tra model)
 ```
 
 Quy tắc chuyển ERD sang class:
@@ -228,21 +232,35 @@ public class HoaDon {
 
 
 
-## 7\. Kế hoạch dữ liệu mẫu
+## 7. Kế hoạch dữ liệu mẫu
 
-|Thực thể|Số lượng dự kiến|
+Dữ liệu được sinh trong bộ nhớ bởi `DataGenerator`, mã sinh theo thứ tự cố định để bản Java và C# cho kết quả giống nhau.
+
+| Thực thể | Số lượng | Mã | Ghi chú |
+|-|-|-|-|
+| ToaNha | 3 | T01 – T03 | Tòa A, B, C |
+| LoaiPhong | 3 | LP01 – LP03 | Phòng 4, 6, 8 giường |
+| Phong | 10 | P01 – P10 | P10 ở trạng thái `DANG_SUA_CHUA` |
+| Giuong | 52 | G01 – G52 | 31 giường trống, 21 giường có người |
+| SinhVien | 24 | SV01 – SV24 | 12 nam, 12 nữ, 6 ngành (mỗi ngành 4 sinh viên) |
+| NhanVien | 4 | NV01 – NV04 | 1 quản lý, 1 kế toán, 2 lễ tân |
+| HopDong | 31 | HD01 – HD31 | 21 hiệu lực, 8 hết hạn, 2 đã hủy |
+| HoaDon | 46 | HDN01 – HDN46 | 4 hóa đơn của hợp đồng cũ, 42 hóa đơn tháng 9 và 10/2026 |
+| ThanhToan | 46 | TT01 – TT46 | Có trả đủ, trả một phần, trả nhiều lần |
+
+Các tình huống đặc biệt được dựng sẵn để truy vấn có kết quả:
+
+| Tình huống | Số lượng / ví dụ |
 |-|-|
-|ToaNha|2 – 3|
-|LoaiPhong|3 (ví dụ 4, 6, 8 giường)|
-|Phong|10 – 15|
-|Giuong|40 – 60|
-|SinhVien|20 – 30|
-|NhanVien|3 – 4|
-|HopDong|25 – 35 (có cả hợp đồng đã hết hạn)|
-|HoaDon|40 – 60|
-|ThanhToan|30 – 50 (có hóa đơn trả đủ, trả một phần, chưa trả)|
+| Hợp đồng sắp hết hạn trong 30 ngày | 3 (HD13, HD20, HD27), tính theo ngày chạy |
+| Hóa đơn chưa trả / trả một phần / trả đủ | 10 / 11 / 25 |
+| Phòng còn đúng 1 giường trống | 2 (P02, P08) |
+| Sinh viên từng ở nhiều hơn một giường | 6 (SV01 ở 3 giường, SV02 – SV06 ở 2 giường) |
+| Hợp đồng đã hủy | 2 (HD30, HD31) |
+| Phòng đang sửa chữa | 1 (P10) |
+| Sinh viên chưa có hợp đồng | 1 (SV24) |
 
-Dữ liệu cần đa dạng để truy vấn có kết quả: hợp đồng sắp hết hạn, hóa đơn chưa trả đủ, giường trống, sinh viên từng ở nhiều giường.
+Quy tắc nghiệp vụ "không trùng thời gian cư trú" được kiểm tra ngay khi tạo hợp đồng trong `DataGenerator` (hợp đồng đã hủy không tính).
 
 
 
@@ -302,5 +320,14 @@ Dữ liệu cần đa dạng để truy vấn có kết quả: hợp đồng s�
 | Nguyễn Phước Lộc | Port toàn bộ sang C# | 10 câu (Stream + LINQ) |
 | Nguyễn Thị Ngọc Nhung | Báo cáo Word, video | 10 câu (Stream + LINQ) |
 
-Mỗi thành viên viết 10 câu truy vấn của mình trên cả hai công nghệ, kết quả hai bản phải trùng nhau.
+
+## 9. Cách chạy (Java)
+
+1. Mở thư mục `DormManagement` bằng IntelliJ IDEA, chọn JDK 17 trở lên.
+2. Đánh dấu thư mục `src` là Sources Root (nếu IntelliJ chưa tự nhận).
+3. Chạy `Main.java` để in kết quả cả 30 câu truy vấn.
+4. Nếu tiếng Việt bị lỗi font: Run → Edit Configurations → VM options → `-Dfile.encoding=UTF-8`.
+
+Dữ liệu mẫu sinh trong bộ nhớ bởi `DataGenerator`, không cần cài cơ sở dữ liệu.
+Câu "hợp đồng sắp hết hạn" tính theo ngày hiện tại nên luôn ra 3 kết quả.
 
