@@ -288,7 +288,7 @@ Dữ liệu cần đa dạng để truy vấn có kết quả: hợp đồng s�
 10. Tính thời gian cư trú trung bình (số ngày) của các hợp đồng đã kết thúc.
 
 
-## 9. Công nghệ và phân công
+## 10. Công nghệ và phân công
 
 | Hạng mục | Java | C# |
 |---|---|---|
