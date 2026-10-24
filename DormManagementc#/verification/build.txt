@@ -1,9 +1,0 @@
-  Determining projects to restore...
-  All projects are up-to-date for restore.
-  DormManagement -> /workspace/scratch/7a37aacb94ba/DormManagement-CSharp-HoanChinh/bin/Debug/net8.0/DormManagement.dll
-
-Build succeeded.
-    0 Warning(s)
-    0 Error(s)
-
-Time Elapsed 00:00:02.63

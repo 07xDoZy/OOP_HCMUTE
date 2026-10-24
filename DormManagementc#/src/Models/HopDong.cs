@@ -2,7 +2,7 @@ using DormManagement.Enums;
 
 namespace DormManagement.Models;
 
-/// <summary>Hợp đồng cư trú; kiểm tra ngày và trùng lịch trước khi gắn quan hệ.</summary>
+/// <summary>Chuyển từ Java: constructor gắn liên kết; generator kiểm tra trùng lịch.</summary>
 public class HopDong
 {
     public string MaHD { get; set; }
@@ -27,24 +27,6 @@ public class HopDong
 
     public HopDong(string maHD, DateTime ngayBatDau, DateTime ngayKetThuc, double tienCoc, TrangThaiHopDong trangThai, SinhVien sinhVien, Giuong giuong, NhanVien nhanVienLap)
     {
-        // Kiểm tra trước mọi thay đổi vào ba danh sách liên kết.
-        ArgumentNullException.ThrowIfNull(sinhVien);
-        ArgumentNullException.ThrowIfNull(giuong);
-        ArgumentNullException.ThrowIfNull(nhanVienLap);
-        ngayBatDau = ngayBatDau.Date;
-        ngayKetThuc = ngayKetThuc.Date;
-        if (ngayBatDau > ngayKetThuc)
-            throw new ArgumentException("Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.");
-        if (trangThai != TrangThaiHopDong.DA_HUY)
-        {
-            if (sinhVien.DanhSachHopDong.Any(h => h.TrangThai != TrangThaiHopDong.DA_HUY &&
-                h.TrungThoiGian(ngayBatDau, ngayKetThuc)))
-                throw new InvalidOperationException("Trùng thời gian cư trú của sinh viên " + sinhVien.MaSV);
-            if (giuong.DanhSachHopDong.Any(h => h.TrangThai != TrangThaiHopDong.DA_HUY &&
-                h.TrungThoiGian(ngayBatDau, ngayKetThuc)))
-                throw new InvalidOperationException("Trùng thời gian của giường " + giuong.MaGiuong);
-        }
-
         MaHD = maHD;
         NgayBatDau = ngayBatDau;
         NgayKetThuc = ngayKetThuc;
@@ -65,8 +47,6 @@ public class HopDong
     {
         batDau = batDau.Date;
         ketThuc = ketThuc.Date;
-        if (batDau > ketThuc)
-            throw new ArgumentException("Khoảng thời gian kiểm tra không hợp lệ.");
         return NgayBatDau <= ketThuc && NgayKetThuc >= batDau;
     }
 

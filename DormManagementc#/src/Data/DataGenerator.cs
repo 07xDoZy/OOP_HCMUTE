@@ -20,7 +20,7 @@ public class DataGenerator {
     private readonly DateTime ngayThamChieu;
 
     public DataGenerator(DateTime? ngayThamChieu = null) {
-        this.ngayThamChieu = (ngayThamChieu ?? DatasetConfig.ReferenceDate).Date;
+        this.ngayThamChieu = (ngayThamChieu ?? DateTime.Today).Date;
         TaoNhanVien();
         TaoToaPhongGiuong();
         TaoSinhVien();
@@ -136,7 +136,13 @@ public class DataGenerator {
     }
 
     private HopDong TaoHD(SinhVien sv, Giuong g, DateTime bd, DateTime kt, TrangThaiHopDong tt) {
-        // Constructor HopDong kiểm tra ngày và trùng lịch trước khi gắn quan hệ.
+        // Giữ kiểm tra trùng lịch tại helper tạo dữ liệu giống Java.
+        if (tt != TrangThaiHopDong.DA_HUY) {
+            if (sv.DanhSachHopDong.Any(h => h.TrangThai != TrangThaiHopDong.DA_HUY && h.TrungThoiGian(bd, kt)))
+                throw new InvalidOperationException("Trùng thời gian cư trú của sinh viên " + sv.MaSV);
+            if (g.DanhSachHopDong.Any(h => h.TrangThai != TrangThaiHopDong.DA_HUY && h.TrungThoiGian(bd, kt)))
+                throw new InvalidOperationException("Trùng thời gian của giường " + g.MaGiuong);
+        }
         int[] nvLap = {0, 2, 3};   // NV01, NV03, NV04 lập hợp đồng
         NhanVien nv = NhanViens[nvLap[HopDongs.Count % 3]];
         HopDong hd = new HopDong($"HD{HopDongs.Count + 1:D2}",

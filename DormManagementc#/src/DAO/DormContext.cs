@@ -14,7 +14,7 @@ public class DormContext
 	public HoaDonDAO HoaDonDAO { get; }
 	public ThanhToanDAO ThanhToanDAO { get; }
 
-	// Không truyền ngày: dùng mốc dữ liệu chuẩn DatasetConfig.ReferenceDate.
+	// Không truyền ngày: dùng ngày hiện tại DateTime.Today.
 	// Truyền ngày: phục vụ demo/kiểm tra có kết quả lặp lại được.
 	public DormContext(DateTime? ngayThamChieu = null)
 	{
